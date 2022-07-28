@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# please create a settings.xml based on settings.xml.sample, having your GH username and personal token, to be able to access GH maven packages
+# please review the settings.xml.sample
 
 docker build . -t tutorial_java_testng_selenium
 
-docker run --rm -v $(pwd)/reports:/source/reports -t tutorial_java_testng_selenium
+docker run --rm -v $(pwd)/reports:/source/target -t tutorial_java_testng_selenium

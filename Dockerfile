@@ -22,7 +22,7 @@ WORKDIR /source
 
 COPY . .
 RUN mkdir /home/automation/.m2
-RUN mv settings.xml /home/automation/.m2/settings.xml
+RUN mv settings.xml.sample /home/automation/.m2/settings.xml
 RUN chown -R automation.automation /home/automation
 
 RUN chown -R automation.automation /source
@@ -36,5 +36,5 @@ ENV DISPLAY=:99
 
 # RUN mvn clean compile test
 
-ENTRYPOINT ["mvn", "clean","compile", "test"]
+ENTRYPOINT ["mvn", "clean", "-Dmaven.clean.failOnError=false", "compile", "test"]
 
