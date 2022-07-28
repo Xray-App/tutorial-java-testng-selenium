@@ -1,0 +1,2 @@
+app.getxray.xray.testng.listeners.XrayListener
+#app.getxray.xray.testng.listeners.XrayReportListener

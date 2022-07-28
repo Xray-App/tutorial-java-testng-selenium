@@ -1,0 +1,10 @@
+ext {
+	jiraBaseUrl = 'https://xray-demo2.getxray.app'
+	jiraUsername = 'xadmin'
+	jiraPassword = 'xispe'
+
+	projectKey = 'CALC'
+	version = '1.0'
+	revision = '123'
+	testEnvironment = ''
+}
