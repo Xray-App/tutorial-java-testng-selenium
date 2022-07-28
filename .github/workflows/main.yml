@@ -1,4 +1,4 @@
-# This is a basic workflow to help you get started with Actions
+.github/workflows/main.yml# This is a basic workflow to help you get started with Actions
 
 name: CI with Xray (cloud and server/DC)
 
@@ -34,7 +34,7 @@ jobs:
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@v1.0.1
       - name: Run tests
-        run: mvn clean compile test
+        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml clean compile test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_USERNAME: ${{ secrets.GH_USERNAME }}
