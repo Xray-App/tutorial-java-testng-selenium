@@ -1,0 +1,79 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI with Xray (cloud and server/DC)
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  # This workflow contains a single job called "test"
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'zulu'
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v0.0.0
+      - name: setup-chromedriver
+        uses: nanasess/setup-chromedriver@v1.0.1
+      - name: Run tests
+        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml clean compile test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_USERNAME: ${{ secrets.GH_USERNAME }}
+          GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+      - name: debug TestNG XML report
+        if: ${{ false }}
+        run: cat test-output/testng-results.xml
+      - name: "Import results to Xray (server/DC) using maven plugin"
+        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml app.getxray:xray-maven-plugin:import-results -Dxray.cloud=false -Dxray.jiraBaseUrl=${{ secrets.JIRASERVER_BASE_URL }} -Dxray.jiraUsername=${{ secrets.JIRASERVER_USERNAME }} -Dxray.jiraPassword=${{ secrets.JIRASERVER_PASSWORD }} -Dxray.projectKey=${{ secrets.JIRASERVER_PROJECT_KEY }} -Dxray.testPlanKey=${{ secrets.XRAYSERVER_TEST_PLAN_KEY }}
+        env:
+          GH_USERNAME: ${{ secrets.GH_USERNAME }}
+          GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+      - name: "Import results to Xray (server/DC) using a GH action"
+        if: ${{ false }}
+        uses: mikepenz/xray-action@v2.3.0
+        with:
+           username: ${{ secrets.JIRASERVER_USERNAME }}
+           password: ${{ secrets.JIRASERVER_PASSWORD }}
+           xrayCloud: "false"
+           xrayBaseUrl: ${{ secrets.JIRASERVER_BASE_URL }}
+           testFormat: "testng"
+           testPaths: "**/reports/*.xml"
+           testPlanKey: "${{ secrets.XRAYSERVER_TEST_PLAN_KEY }}"
+           projectKey: "${{ secrets.JIRASERVER_PROJECT_KEY }}"
+      - name: "Import results to Xray (cloud) using maven plugin"
+        if: ${{ false }}
+        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml app.getxray:xray-maven-plugin:import-results -Dxray.cloud=true -Dxray.clientId=${{ secrets.XRAYCLOUD_CLIENT_ID }} -Dxray.clientSecret=${{ secrets.XRAYCLOUD_CLIENT_SECRET }} -Dxray.projectKey=${{ secrets.JIRACLOUD_PROJECT_KEY }} -Dxray.testPlanKey=${{ secrets.XRAYCLOUD_TEST_PLAN_KEY }}
+        env:
+          GH_USERNAME: ${{ secrets.GH_USERNAME }}
+          GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+      - name: "Import results to Xray (cloud) using a GH action"
+        if: ${{ false }}
+        uses: mikepenz/xray-action@v2.3.0
+        with:
+           username: "${{ secrets.XRAYCLOUD_CLIENT_ID }}"
+           password: "${{ secrets.XRAYCLOUD_CLIENT_SECRET }}"
+           xrayCloud: "true"
+           testFormat: "testng"
+           testPaths: "**/reports/*.xml"
+           testPlanKey: "${{ secrets.XRAYCLOUD_TEST_PLAN_KEY }}"
+           projectKey: "${{ secrets.JIRACLOUD_PROJECT_KEY }}"
+
