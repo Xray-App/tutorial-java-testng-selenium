@@ -21,11 +21,17 @@ Tests can be run using the maven command `mvn`.
 mvn test
 ```
 
+If you prefer Gradle, it's also possible to run the tests using the command `gradle`.
+
+```bash
+gradle clean testngTest
+```
+
 Tests can also run inside a Docker container; local directory should be mounted so that TestNG XML results are stored locally.
 
 ```bash
 docker build . -t tutorial_java_testng_selenium
-docker run --rm -v $(pwd)/reports:/source/reports -t tutorial_java_testng_selenium
+docker run --rm -v $(pwd)/reports:/source/target -t tutorial_java_testng_selenium
 ```
 
 ## Submitting results to Jira
