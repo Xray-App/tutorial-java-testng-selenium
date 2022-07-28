@@ -44,6 +44,18 @@
                 </configuration>
              </plugin>
              
+
+             <plugin>
+                <groupId>app.getxray</groupId>
+                <artifactId>xray-maven-plugin</artifactId>
+                <version>0.7.0</version>
+                <configuration>
+                    <projectKey>XT</projectKey>
+                    <reportFormat>testng</reportFormat>
+                    <reportFile>target/surefire-reports/testng-results.xml</reportFile>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
