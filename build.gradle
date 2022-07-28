@@ -101,6 +101,7 @@ task importResults(type: Exec) {
 
 task importResultsCloud() {
 	apply from: "gradle/properties.gradle"
+
 	def baseUrl = 'https://xray.cloud.getxray.app'
 
 	//token=$(curl -H "Content-Type: application/json" -X POST --data @"cloud_auth.json" "$BASE_URL/api/v1/authenticate"| tr -d '"')
@@ -108,33 +109,33 @@ task importResultsCloud() {
 
 	        new ByteArrayOutputStream().withStream { os ->
         	    def result = exec {
-			ignoreExitValue = true
-			commandLine 'curl', '--silent', '--fail-with-body', '-H','Content-Type: application/json', '-X','POST', '--data', '@cloud_auth.json', "${baseUrl}/api/v2/authenticate"
-                	standardOutput = os
-           		}
-			if (result.getExitValue() != 0) {
-				println "ERROR: problem authenticating"
-			} else {
-       	     		 	def token = os.toString().replaceAll("\"","")
-				// ext.xrayToken = token
-				println "Authenticated with Xray!"
-
-				 new ByteArrayOutputStream().withStream { os2 ->
-		 	    		def result2 = exec {
 					ignoreExitValue = true
-					commandLine 'curl', '--silent', '--fail-with-body', '-H','Content-Type: application/xml', '-X','POST', '-H', "Authorization: Bearer ${token}", '--data', '@test-output/testng-results.xml', "${baseUrl}/api/v2/import/execution/testng?projectKey=${projectKey}"
-        	        		standardOutput = os2
-           				}
-					if (result2.getExitValue() != 0) {
-						println "ERROR: problem importing results"
-       	     				 	println os2.toString()
-					} else {
-						println "Resuls imported to Xray!"
-       	     			 		println os2.toString()
+					commandLine 'curl', '--silent', '--fail-with-body', '-H','Content-Type: application/json', '-X','POST', '--data', '@cloud_auth.json', "${baseUrl}/api/v2/authenticate"
+					standardOutput = os
+				}
+				if (result.getExitValue() != 0) {
+					println "ERROR: problem authenticating"
+				} else {
+					def token = os.toString().replaceAll("\"","")
+					
+					println "Authenticated with Xray!"
+
+					new ByteArrayOutputStream().withStream { os2 ->
+						def result2 = exec {
+							ignoreExitValue = true
+							commandLine 'curl', '--silent', '--fail-with-body', '-H','Content-Type: application/xml', '-X','POST', '-H', "Authorization: Bearer ${token}", '--data', '@test-output/testng-results.xml', "${baseUrl}/api/v2/import/execution/testng?projectKey=${projectKey}"
+							standardOutput = os2
+						}
+						if (result2.getExitValue() != 0) {
+							println "ERROR: problem importing results"
+							println os2.toString()
+						} else {
+							println "Resuls imported to Xray!"
+							println os2.toString()
+						}
 					}
 				}
 			}
-		}
 
      	}
 }

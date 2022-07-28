@@ -32,8 +32,6 @@ public class LoginTests {
     @AfterSuite
     public void tearDown() throws Exception {
         driver.quit();
-        //driver = null;
-        //repo = null;
     }
 
     @Test
