@@ -6,7 +6,7 @@
 
 ## Overview
 
-Code that supports the tutorial [Testing web applications using Selenium and TestNG in Java](https://docs.getxray.app/display/XRAYCLOUD/Testing+using+TestNG+in+Java) showcasing the integration between [Xray Test Management](https://www.getxray.app/) on Jira and TestNG, using Xray related annotations.
+Code that supports the tutorial [Testing web applications using Selenium and TestNG in Java](https://docs.getxray.app/display/XRAYCLOUD/Testing+web+applications+using+Selenium+and+TestNG+in+Java) showcasing the integration between [Xray Test Management](https://www.getxray.app/) on Jira and TestNG, using Xray related annotations.
 
 ## Prerequisites
 
@@ -37,7 +37,7 @@ docker run --rm -v $(pwd)/reports:/source/target -t tutorial_java_testng_seleniu
 ## Submitting results to Jira
 
 Results can be submitted to Jira so that they can be shared with the team and their impacts be easily analysed.
-This can be achieved using [Xray Test Management](https://www.getxray.app/) as shown in further detail in this [tutorial](https://docs.getxray.app/display/XRAYCLOUD/Testing+using+TestNG+in+Java).
+This can be achieved using [Xray Test Management](https://www.getxray.app/) as shown in further detail in this [tutorial](https://docs.getxray.app/display/XRAYCLOUD/Testing+web+applications+using+Selenium+and+TestNG+in+Java).
 
 ## Contact
 
