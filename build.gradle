@@ -1,24 +1,8 @@
 apply plugin: 'java'
 
 repositories {
-    //mavenLocal()
     mavenCentral()
-	mavenLocal()
-/*
-    maven {
-        url = uri('https://maven.xpand-it.com/artifactory/releases')
-    }
-
-    maven {
-        url = uri('https://maven.pkg.github.com/bitcoder/*')
-    }
-
-    maven {
-        url = uri('https://repo.maven.apache.org/maven2/')
-    }
-
-*/
-
+    mavenLocal()
 }
 
 jar {
@@ -104,7 +88,7 @@ task importResultsCloud() {
 
 	def baseUrl = 'https://xray.cloud.getxray.app'
 
-	//token=$(curl -H "Content-Type: application/json" -X POST --data @"cloud_auth.json" "$BASE_URL/api/v1/authenticate"| tr -d '"')
+	//token=$(curl -H "Content-Type: application/json" -X POST --data @"cloud_auth.json" "$BASE_URL/api/v2/authenticate"| tr -d '"')
 	doLast {
 
 	        new ByteArrayOutputStream().withStream { os ->
